@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BISHWAJIT SUTAR</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --void:#050505;
+  --white:#f0ece3;
+  --hot:#c8ff00;
+  --red:#ff2d20;
+  --dim:#2a2a2a;
+  --mid:#888;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--void);color:var(--white);font-family:'IBM Plex Mono',monospace;overflow-x:hidden;cursor:none}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.035;pointer-events:none;z-index:9000;mix-blend-mode:overlay}
+#cur{position:fixed;top:0;left:0;width:6px;height:6px;background:var(--hot);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:difference}
+#cur-trail{position:fixed;top:0;left:0;width:32px;height:32px;border:1px solid rgba(200,255,0,.4);border-radius:50%;pointer-events:none;z-index:9998;transition:width .3s,height .3s,border-color .3s}
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--void);z-index:8000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;transition:opacity .6s 3.2s,visibility .6s 3.2s}
+#loader.done{opacity:0;visibility:hidden}
+.load-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,10vw,8rem);letter-spacing:.06em;overflow:hidden;display:flex;gap:.5rem}
+.load-name span{display:inline-block;animation:slideUp .8s cubic-bezier(.76,0,.24,1) forwards;transform:translateY(100%)}
+.load-name span:nth-child(1){animation-delay:.2s}
+.load-name span:nth-child(2){animation-delay:.35s;color:var(--hot)}
+.load-bar-wrap{width:200px;height:1px;background:var(--dim);overflow:hidden}
+.load-bar{height:100%;background:var(--hot);width:0;animation:loadFill 2.8s .4s cubic-bezier(.76,0,.24,1) forwards}
+.load-pct{font-size:.65rem;letter-spacing:.2em;color:var(--mid)}
+@keyframes slideUp{to{transform:translateY(0)}}
+@keyframes loadFill{to{width:100%}}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:1.4rem 3rem;mix-blend-mode:difference}
+.nav-mark{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.15em;color:var(--white)}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--white);text-decoration:none;opacity:.5;transition:opacity .2s}
+.nav-links a:hover{opacity:1}
+.nav-dot{width:8px;height:8px;border-radius:50%;background:var(--hot);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(200,255,0,.4)}50%{box-shadow:0 0 0 8px rgba(200,255,0,0)}}
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 3rem 4rem;position:relative;overflow:hidden}
+.hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(200,255,0,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(200,255,0,.04) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%)}
+.hero-circle{position:absolute;right:-10vw;top:50%;transform:translateY(-50%);width:55vw;height:55vw;max-width:700px;max-height:700px;border-radius:50%;border:1px solid rgba(200,255,0,.08);animation:rotateSlow 30s linear infinite}
+.hero-circle::after{content:'';position:absolute;inset:40px;border-radius:50%;border:1px solid rgba(200,255,0,.05)}
+.hero-circle::before{content:'';position:absolute;inset:100px;border-radius:50%;border:1px solid rgba(200,255,0,.04)}
+@keyframes rotateSlow{to{transform:translateY(-50%) rotate(360deg)}}
+.hero-eyebrow{display:flex;align-items:center;gap:1rem;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--hot);margin-bottom:1.5rem;opacity:0;animation:fadeIn .5s 3.4s forwards}
+.hero-eyebrow::before{content:'';width:40px;height:1px;background:var(--hot)}
+.hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,16vw,16rem);line-height:.88;letter-spacing:-.01em;overflow:hidden}
+.hero-name-line{overflow:hidden}
+.hero-name-line span{display:block;transform:translateY(110%);opacity:0;animation:lineUp .9s cubic-bezier(.76,0,.24,1) forwards}
+.hero-name-line:nth-child(1) span{animation-delay:3.2s}
+.hero-name-line:nth-child(2) span{animation-delay:3.38s;-webkit-text-stroke:2px var(--hot);color:transparent}
+@keyframes lineUp{to{transform:translateY(0);opacity:1}}
+.hero-meta{display:flex;align-items:flex-end;justify-content:space-between;margin-top:2.5rem;opacity:0;animation:fadeIn .6s 3.7s forwards}
+.hero-meta-left p{font-family:'Instrument Serif',serif;font-size:clamp(.9rem,1.5vw,1.2rem);color:rgba(240,236,227,.5);max-width:360px;line-height:1.6}
+.hero-stats{display:flex;gap:3rem}
+.hero-stat-num{font-family:'Bebas Neue',sans-serif;font-size:3rem;line-height:1;color:var(--white)}
+.hero-stat-label{font-size:.55rem;letter-spacing:.2em;color:var(--mid);text-transform:uppercase;margin-top:.2rem}
+.hero-scroll-hint{position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:var(--mid);display:flex;flex-direction:column;align-items:center;gap:.8rem;opacity:0;animation:fadeIn .6s 4s forwards}
+.scroll-rod{width:1px;height:60px;background:linear-gradient(var(--hot),transparent);animation:rodDrop 2s 4.2s ease-in-out infinite;transform-origin:top;transform:scaleY(0)}
+@keyframes rodDrop{0%{transform:scaleY(0);opacity:1}80%{transform:scaleY(1);opacity:1}100%{transform:scaleY(1);opacity:0}}
+@keyframes fadeIn{to{opacity:1}}
+/* GLITCH */
+.glitch{position:relative;display:inline-block}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;font:inherit}
+.glitch::before{left:2px;text-shadow:-1px 0 var(--red);clip:rect(44px,450px,56px,0);animation:glitch1 5s infinite linear;color:inherit;-webkit-text-stroke:0;color:var(--white)}
+.glitch::after{left:-2px;text-shadow:1px 0 var(--hot);clip:rect(44px,450px,56px,0);animation:glitch2 5s infinite linear;color:inherit;-webkit-text-stroke:0;color:var(--white)}
+@keyframes glitch1{0%,90%,100%{clip:rect(0,0,0,0);opacity:0}91%{clip:rect(12px,9999px,18px,0);opacity:1}93%{clip:rect(60px,9999px,68px,0)}95%{clip:rect(30px,9999px,40px,0)}97%{clip:rect(80px,9999px,90px,0)}}
+@keyframes glitch2{0%,90%,100%{clip:rect(0,0,0,0);opacity:0}92%{clip:rect(40px,9999px,50px,0);opacity:1}94%{clip:rect(5px,9999px,15px,0)}96%{clip:rect(70px,9999px,78px,0)}}
+/* MARQUEE */
+.marquee-strip{background:var(--hot);color:var(--void);padding:.6rem 0;overflow:hidden;white-space:nowrap}
+.marquee-inner{display:inline-flex;animation:marqScroll 18s linear infinite}
+.marquee-inner span{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.15em;padding:0 1.5rem}
+.marquee-inner span.sep{opacity:.4}
+@keyframes marqScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* SECTIONS */
+.s{padding:8rem 3rem;position:relative;overflow:hidden}
+.s-num{position:absolute;right:3rem;top:3rem;font-family:'Bebas Neue',sans-serif;font-size:8rem;color:rgba(255,255,255,.03);line-height:1;pointer-events:none;user-select:none}
+.label{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--hot);margin-bottom:3rem;display:flex;align-items:center;gap:.8rem}
+.label::before{content:'';width:24px;height:1px;background:var(--hot)}
+/* ABOUT */
+#about{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;padding:0}
+.about-left{border-right:1px solid var(--dim);padding:8rem 4rem;display:flex;flex-direction:column;justify-content:center}
+.about-tagline{font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(2rem,4vw,3.5rem);line-height:1.2;color:var(--white);margin-bottom:2rem}
+.about-tagline em{color:var(--hot);font-style:normal}
+.about-body{font-size:.8rem;line-height:2;color:var(--mid);max-width:440px}
+.about-contact{margin-top:3rem;display:flex;flex-direction:column;gap:.8rem}
+.about-contact-row{display:flex;align-items:center;gap:1rem;font-size:.7rem;letter-spacing:.05em;color:rgba(240,236,227,.5);border-top:1px solid var(--dim);padding-top:.8rem}
+.about-contact-row a{color:var(--white);text-decoration:none;transition:color .2s}
+.about-contact-row a:hover{color:var(--hot)}
+.about-right{display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem}
+.big-initial{font-family:'Bebas Neue',sans-serif;font-size:clamp(8rem,18vw,18rem);line-height:.85;letter-spacing:-.02em;-webkit-text-stroke:1px rgba(200,255,0,.25);color:transparent;margin-bottom:3rem}
+.edu-item{padding:1.5rem 0;border-bottom:1px solid var(--dim)}
+.edu-item:first-child{border-top:1px solid var(--dim)}
+.edu-year{font-size:.6rem;color:var(--hot);letter-spacing:.2em;margin-bottom:.3rem}
+.edu-deg{font-size:.85rem;color:var(--white);margin-bottom:.2rem}
+.edu-school{font-size:.7rem;color:var(--mid)}
+/* SKILLS */
+#skills{background:var(--void)}
+.skills-table{width:100%;border-collapse:collapse;margin-top:1rem}
+.skills-table tr{border-bottom:1px solid var(--dim);transition:background .15s}
+.skills-table tr:hover{background:rgba(200,255,0,.03)}
+.skills-table td{padding:1.3rem 0;vertical-align:middle}
+.sk-name{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.05em;color:var(--white);width:260px}
+.sk-cat{font-size:.6rem;letter-spacing:.2em;color:var(--mid);width:160px}
+.sk-bar-cell{width:100%}
+.sk-bar-bg{height:2px;background:var(--dim);position:relative;overflow:visible}
+.sk-bar-fill{position:absolute;top:0;left:0;height:100%;background:var(--hot);width:0;transition:width 1.8s cubic-bezier(.19,1,.22,1)}
+.sk-bar-fill::after{content:'';position:absolute;right:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--hot)}
+.sk-pct{font-size:.65rem;color:var(--hot);width:50px;text-align:right}
+/* EXPERIENCE */
+#experience{background:var(--void)}
+.exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:3rem}
+.exp-card{border:1px solid var(--dim);padding:3rem;position:relative;transition:border-color .3s;overflow:hidden}
+.exp-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,255,0,.04),transparent);opacity:0;transition:opacity .3s}
+.exp-card:hover{border-color:rgba(200,255,0,.3)}
+.exp-card:hover::before{opacity:1}
+.exp-period{font-size:.6rem;letter-spacing:.2em;color:var(--hot);margin-bottom:1.5rem;text-transform:uppercase}
+.exp-company{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:.04em;margin-bottom:.3rem}
+.exp-role{font-family:'Instrument Serif',serif;font-style:italic;font-size:1rem;color:rgba(240,236,227,.5);margin-bottom:1.5rem}
+.exp-desc{font-size:.75rem;line-height:1.9;color:var(--mid)}
+.exp-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
+.exp-tag{font-size:.58rem;padding:.3rem .7rem;border:1px solid var(--dim);color:var(--mid);letter-spacing:.08em;transition:border-color .2s,color .2s}
+.exp-card:hover .exp-tag{border-color:rgba(200,255,0,.3);color:var(--hot)}
+/* PROJECTS */
+#projects{background:var(--void);padding-bottom:0}
+.proj-intro{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4rem}
+.proj-intro-right{font-size:.65rem;color:var(--mid);letter-spacing:.1em;text-align:right;max-width:200px;line-height:1.8}
+.proj-scroll-track{display:flex;gap:2px;cursor:grab;user-select:none;padding-bottom:4rem;overflow-x:auto;scrollbar-width:none}
+.proj-scroll-track::-webkit-scrollbar{display:none}
+.proj-scroll-track.grabbing{cursor:grabbing}
+.proj-item{flex:0 0 420px;border:1px solid var(--dim);position:relative;overflow:hidden;transition:border-color .3s}
+.proj-item:hover{border-color:rgba(200,255,0,.4)}
+.proj-item-inner{padding:2.5rem;height:100%}
+.proj-num-big{font-family:'Bebas Neue',sans-serif;font-size:6rem;line-height:1;color:rgba(255,255,255,.04);position:absolute;right:1rem;bottom:.5rem;pointer-events:none}
+.proj-label{font-size:.55rem;letter-spacing:.25em;color:var(--hot);margin-bottom:1rem;text-transform:uppercase}
+.proj-title{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:.04em;line-height:1;margin-bottom:1rem}
+.proj-stack{font-size:.65rem;color:var(--mid);letter-spacing:.1em;margin-bottom:1.5rem;line-height:1.8}
+.proj-desc-text{font-size:.75rem;line-height:1.9;color:rgba(240,236,227,.4)}
+.proj-arrow{display:inline-flex;align-items:center;gap:.5rem;font-size:.65rem;letter-spacing:.15em;color:var(--hot);text-transform:uppercase;margin-top:2rem;transition:gap .2s;cursor:pointer}
+.proj-arrow:hover{gap:1rem}
+.proj-item-highlight{border-color:rgba(200,255,0,.25)}
+.proj-item-highlight .proj-title{color:var(--hot)}
+/* FOOTER */
+footer{border-top:1px solid var(--dim);display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;padding:3rem;gap:2rem}
+.footer-mark{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.1em}
+.footer-center{text-align:center;font-size:.6rem;letter-spacing:.2em;color:var(--mid);text-transform:uppercase}
+.footer-right{text-align:right}
+.footer-email{font-size:.7rem;color:var(--hot);letter-spacing:.05em;text-decoration:none;border-bottom:1px solid rgba(200,255,0,.3);padding-bottom:2px;transition:border-color .2s}
+.footer-email:hover{border-color:var(--hot)}
+/* REVEAL */
+.rv{opacity:0;transform:translateY(40px);transition:opacity .8s,transform .8s cubic-bezier(.19,1,.22,1)}
+.rv.on{opacity:1;transform:none}
+.rv-left{opacity:0;transform:translateX(-40px);transition:opacity .8s,transform .8s cubic-bezier(.19,1,.22,1)}
+.rv-left.on{opacity:1;transform:none}
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem}
+  #about{grid-template-columns:1fr;min-height:auto}
+  .about-left,.about-right{padding:4rem 1.5rem}
+  .about-left{border-right:none;border-bottom:1px solid var(--dim)}
+  .big-initial{font-size:clamp(5rem,25vw,12rem)}
+  .s{padding:5rem 1.5rem}
+  .exp-grid{grid-template-columns:1fr}
+  .skills-table td:nth-child(2){display:none}
+  footer{grid-template-columns:1fr;text-align:center;gap:1rem}
+  .footer-right{text-align:center}
+  #hero{padding:0 1.5rem 3rem}
+  .hero-stats{gap:1.5rem}
+  .hero-meta{flex-direction:column;gap:1.5rem;align-items:flex-start}
+  .proj-item{flex:0 0 300px}
+  .proj-intro{flex-direction:column;gap:1rem;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-trail"></div>
+
+<div id="loader">
+  <div class="load-name"><span>BISHWAJIT</span><span>SUTAR</span></div>
+  <div class="load-bar-wrap"><div class="load-bar"></div></div>
+  <div class="load-pct" id="loadPct">0%</div>
+</div>
+
+<nav>
+  <div class="nav-mark">BS — PORTFOLIO</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Work</a>
+    <a href="#projects">Projects</a>
+  </div>
+  <div class="nav-dot"></div>
+</nav>
+
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-circle"></div>
+  <div class="hero-eyebrow">Angular Developer &amp; Frontend Engineer · Hyderabad</div>
+  <div class="hero-name">
+    <div class="hero-name-line"><span class="glitch" data-text="BISHWAJIT">BISHWAJIT</span></div>
+    <div class="hero-name-line"><span>SUTAR</span></div>
+  </div>
+  <div class="hero-meta">
+    <div class="hero-meta-left">
+      <p>4.5+ years building enterprise SaaS, ERPs,<br>and e-commerce at scale. Angular is my craft.</p>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hero-stat-num">4.5</div><div class="hero-stat-label">Yrs. Exp.</div></div>
+      <div><div class="hero-stat-num">10+</div><div class="hero-stat-label">Modules</div></div>
+      <div><div class="hero-stat-num">4</div><div class="hero-stat-label">Products</div></div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint"><div class="scroll-rod"></div>Scroll</div>
+</section>
+
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span>Angular</span><span class="sep">✦</span><span>Next.js</span><span class="sep">✦</span><span>Node.js</span><span class="sep">✦</span><span>SaaS ERP</span><span class="sep">✦</span><span>REST API</span><span class="sep">✦</span><span>Angular Material</span><span class="sep">✦</span><span>TypeScript</span><span class="sep">✦</span><span>MySQL</span><span class="sep">✦</span><span>Bootstrap</span><span class="sep">✦</span><span>AI-Assisted Dev</span><span class="sep">✦</span>
+    <span>Angular</span><span class="sep">✦</span><span>Next.js</span><span class="sep">✦</span><span>Node.js</span><span class="sep">✦</span><span>SaaS ERP</span><span class="sep">✦</span><span>REST API</span><span class="sep">✦</span><span>Angular Material</span><span class="sep">✦</span><span>TypeScript</span><span class="sep">✦</span><span>MySQL</span><span class="sep">✦</span><span>Bootstrap</span><span class="sep">✦</span><span>AI-Assisted Dev</span><span class="sep">✦</span>
+  </div>
+</div>
+
+<section id="about">
+  <div class="about-left">
+    <div class="label">01 — About</div>
+    <div class="about-tagline rv-left">Building products that <em>actually</em> work — at scale, every day.</div>
+    <p class="about-body rv-left" style="transition-delay:.1s">Results-driven frontend engineer specializing in Angular with 4.5+ years of hands-on experience in enterprise-grade SaaS platforms. Currently at Revalsys Technologies, working across 10+ ERP modules — from POS and Finance to HRMS and CMS.</p>
+    <p class="about-body rv-left" style="transition-delay:.2s;margin-top:1rem">I don't just write components. I understand systems, collaborate with backend teams, and ship end-to-end. The Fossil India project was built entirely with AI tools — zero manual code, production-ready.</p>
+    <div class="about-contact rv-left" style="transition-delay:.3s">
+      <div class="about-contact-row"><span style="color:var(--hot);width:60px;font-size:.55rem;letter-spacing:.2em">EMAIL</span><a href="mailto:bishwajitsutar@gmail.com">bishwajitsutar@gmail.com</a></div>
+      <div class="about-contact-row"><span style="color:var(--hot);width:60px;font-size:.55rem;letter-spacing:.2em">PHONE</span><a href="tel:+917008167535">+91 7008167535</a></div>
+      <div class="about-contact-row"><span style="color:var(--hot);width:60px;font-size:.55rem;letter-spacing:.2em">CITY</span><span>Banjara Hills, Hyderabad</span></div>
+    </div>
+  </div>
+  <div class="about-right">
+    <div class="big-initial rv" style="transition-delay:.1s">BS</div>
+    <div class="label">Education</div>
+    <div class="edu-item rv" style="transition-delay:.15s"><div class="edu-year">2016 – 2020</div><div class="edu-deg">B.Tech · Mechanical Engineering (Hons.)</div><div class="edu-school">Synergy Institute of Engineering &amp; Technology · BPUT, Odisha · CGPA 6.98</div></div>
+    <div class="edu-item rv" style="transition-delay:.2s"><div class="edu-year">2014 – 2016</div><div class="edu-deg">HSC · Science</div><div class="edu-school">Sarala Mahavidyalaya · CHSE, Odisha · 56%</div></div>
+    <div class="edu-item rv" style="transition-delay:.25s"><div class="edu-year">2014</div><div class="edu-deg">SSC</div><div class="edu-school">Akhandalamani Vidyapitha · BSE, Odisha · 75%</div></div>
+  </div>
+</section>
+
+<section id="skills" class="s">
+  <div class="s-num">02</div>
+  <div class="label rv">02 — Skills</div>
+  <table class="skills-table" id="skillsTable">
+    <tbody>
+      <tr class="rv"><td class="sk-name">Angular</td><td class="sk-cat">Frontend Framework</td><td class="sk-bar-cell"><div class="sk-bar-bg"><div class="sk-bar-fill" data-w="92"></div></div></td><td class="sk-pct">92%</td></tr>
+      <tr class="rv"><td class="sk-name">Angular Material</td><td class="sk-cat">UI Library</td><td class="sk-bar-cell"><div class="sk-bar-bg"><div class="sk-bar-fill" data-w="88"></div></div></td><td class="sk-pct">88%</td></tr>
+      <tr class="rv"><td class="sk-name">JavaScript ES6+</td><td class="sk-cat">Language</td><td class="sk-bar-cell"><div class="sk-bar-bg"><div class="sk-bar-fill" data-w="90"></div></div></td><td class="sk-pct">90%</td></tr>
+      <tr class="rv"><td class="sk-name">HTML5 / CSS3</td><td class="sk-cat">Markup &amp; Style</td><td class="sk-bar-cell"><div class="sk-bar-bg"><div class="sk-bar-fill" data-w="94"></div></div></td><td class="sk-pct">94%</td></tr>
+      <tr class="rv"><td class="sk-name">Next.js</td><td class="sk-cat">SSR Framework</td><td class="sk-bar-cell"><div class="sk-bar-bg"><div class="sk-bar-fill" data-w="78"></div></div></td><td class="sk-pct">78%</td></tr>
+      <tr class="rv"><td class="sk-name">Node.js</td><td class="sk-cat">Backend</td><td class="sk-bar-cell"><div class="sk-bar-bg"><div class="sk-bar-fill" data-w="72"></div></div></td><td class="sk-pct">72%</td></tr>
+      <tr class="rv"><td class="sk-name">REST APIs</td><td class="sk-cat">Integration</td><td class="sk-bar-cell"><div class="sk-bar-bg"><div class="sk-bar-fill" data-w="89"></div></div></td><td class="sk-pct">89%</td></tr>
+      <tr class="rv"><td class="sk-name">AI-Assisted Dev</td><td class="sk-cat">Tooling</td><td class="sk-bar-cell"><div class="sk-bar-bg"><div class="sk-bar-fill" data-w="86"></div></div></td><td class="sk-pct">86%</td></tr>
+      <tr class="rv"><td class="sk-name">MySQL</td><td class="sk-cat">Database</td><td class="sk-bar-cell"><div class="sk-bar-bg"><div class="sk-bar-fill" data-w="65"></div></div></td><td class="sk-pct">65%</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="experience" class="s">
+  <div class="s-num">03</div>
+  <div class="label rv">03 — Work Experience</div>
+  <div class="exp-grid">
+    <div class="exp-card rv">
+      <div class="exp-period">Apr 2023 — Present · 2+ Yrs</div>
+      <div class="exp-company">REVALSYS</div>
+      <div class="exp-role">Angular Developer</div>
+      <div class="exp-desc">Building and maintaining RevalERP — a comprehensive SaaS ERP. Own 10+ modules including POS, Procurement, Ticket CRM, Sales CRM, Finance, HRMS, Project Management, and CMS. Developed the CMS module — fully SaaS-based, zero custom code per new client. RDLC-based reporting for Finance and HR.</div>
+      <div class="exp-tags"><span class="exp-tag">Angular</span><span class="exp-tag">SaaS</span><span class="exp-tag">RDLC</span><span class="exp-tag">CMS</span><span class="exp-tag">ERP</span><span class="exp-tag">Dynamic Forms</span></div>
+    </div>
+    <div class="exp-card rv" style="transition-delay:.1s">
+      <div class="exp-period">Oct 2021 — Mar 2023 · 1.5 Yrs</div>
+      <div class="exp-company">SNIPE TECH</div>
+      <div class="exp-role">Jr. Angular Developer</div>
+      <div class="exp-desc">Designed and built APMT — Academic Projects Management Tool. Implemented auth/authorization. Built verification manager, project/article upload pages, and full admin panel with CRUD operations for locations, categories, roles, and content.</div>
+      <div class="exp-tags"><span class="exp-tag">Angular</span><span class="exp-tag">Spring Boot</span><span class="exp-tag">Hibernate</span><span class="exp-tag">MySQL</span><span class="exp-tag">Auth</span><span class="exp-tag">CRUD</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="s" style="padding-bottom:2rem">
+  <div class="s-num">04</div>
+  <div class="proj-intro">
+    <div class="label rv">04 — Projects</div>
+    <div class="proj-intro-right rv" style="transition-delay:.1s">Drag to explore →</div>
+  </div>
+  <div class="proj-scroll-track" id="projTrack">
+    <div class="proj-item proj-item-highlight">
+      <div class="proj-item-inner">
+        <div class="proj-label">Ongoing · Revalsys Technologies</div>
+        <div class="proj-title">REVAL ERP</div>
+        <div class="proj-stack">Angular · Angular Material · REST APIs · RDLC Reports</div>
+        <div class="proj-desc-text">Comprehensive SaaS-based ERP covering POS, Procurement, Ticket CRM, Sales CRM, Finance, HRMS, Project Management &amp; CMS. Zero custom code per client. RDLC reporting for Finance &amp; HR.</div>
+        <div class="proj-arrow">Highlight Project <span>→</span></div>
+      </div>
+      <div class="proj-num-big">01</div>
+    </div>
+    <div class="proj-item">
+      <div class="proj-item-inner">
+        <div class="proj-label">8 Months · E-Commerce</div>
+        <div class="proj-title">JOCKEY INDIA</div>
+        <div class="proj-stack">Angular · Bootstrap · REST APIs</div>
+        <div class="proj-desc-text">PLP and PDP for India's leading innerwear brand. Dynamic filters, sorting, and pagination for the product catalog. Ongoing maintenance, bug fixes, and performance improvements at scale.</div>
+        <div class="proj-arrow">View Project <span>→</span></div>
+      </div>
+      <div class="proj-num-big">02</div>
+    </div>
+    <div class="proj-item">
+      <div class="proj-item-inner">
+        <div class="proj-label">2 Months · AI-Built · E-Commerce</div>
+        <div class="proj-title">FOSSIL INDIA</div>
+        <div class="proj-stack">Next.js · Node.js · AI Tools · Payment Gateway</div>
+        <div class="proj-desc-text">Entire project built using AI tools — not a single line written manually. Full e-commerce flow: List Page, PDP, Cart, Checkout, and Payment Gateway. Proof of rapid AI-assisted delivery.</div>
+        <div class="proj-arrow">AI-Powered <span>→</span></div>
+      </div>
+      <div class="proj-num-big">03</div>
+    </div>
+    <div class="proj-item">
+      <div class="proj-item-inner">
+        <div class="proj-label">Nov 2021 – Sep 2022 · Snipe Tech</div>
+        <div class="proj-title">APMT TOOL</div>
+        <div class="proj-stack">Angular · Spring Boot · Hibernate · MySQL · REST API</div>
+        <div class="proj-desc-text">Academic Projects Management Tool. Login with auth &amp; authorization, verification manager, upload pages, and full admin panel with CRUD for users, categories, locations, and roles.</div>
+        <div class="proj-arrow">View Project <span>→</span></div>
+      </div>
+      <div class="proj-num-big">04</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-mark">BISHWAJIT SUTAR</div>
+  <div class="footer-center">© 2025 · Angular Developer · Hyderabad</div>
+  <div class="footer-right"><a href="mailto:bishwajitsutar@gmail.com" class="footer-email">bishwajitsutar@gmail.com</a></div>
+</footer>
+
+<script>
+// LOADER
+const pctEl=document.getElementById('loadPct'),loader=document.getElementById('loader');
+let n=0;
+const counter=setInterval(()=>{n=Math.min(n+Math.floor(Math.random()*8)+2,100);pctEl.textContent=n+'%';if(n>=100)clearInterval(counter)},80);
+setTimeout(()=>loader.classList.add('done'),3200);
+
+// CURSOR
+const cur=document.getElementById('cur'),trail=document.getElementById('cur-trail');
+let mx=-100,my=-100,tx=-100,ty=-100;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.transform=`translate(${mx-3}px,${my-3}px)`});
+(function anim(){tx+=(mx-tx)*.1;ty+=(my-ty)*.1;trail.style.transform=`translate(${tx-16}px,${ty-16}px)`;requestAnimationFrame(anim)})();
+document.querySelectorAll('a,button,.proj-item,.exp-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{trail.style.width='60px';trail.style.height='60px';trail.style.borderColor='rgba(200,255,0,.7)'});
+  el.addEventListener('mouseleave',()=>{trail.style.width='32px';trail.style.height='32px';trail.style.borderColor='rgba(200,255,0,.4)'});
+});
+
+// REVEAL
+const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')})},{threshold:.12});
+document.querySelectorAll('.rv,.rv-left').forEach(el=>io.observe(el));
+
+// SKILL BARS
+const barIO=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    e.target.querySelectorAll('.sk-bar-fill').forEach(bar=>{bar.style.width=bar.dataset.w+'%'});
+    barIO.unobserve(e.target);
+  });
+},{threshold:.2});
+const tbl=document.getElementById('skillsTable');
+if(tbl)barIO.observe(tbl);
+
+// DRAG SCROLL
+const track=document.getElementById('projTrack');
+let down=false,startX,sl;
+track.addEventListener('mousedown',e=>{down=true;track.classList.add('grabbing');startX=e.pageX-track.offsetLeft;sl=track.scrollLeft});
+window.addEventListener('mouseup',()=>{down=false;track.classList.remove('grabbing')});
+track.addEventListener('mousemove',e=>{if(!down)return;e.preventDefault();track.scrollLeft=sl-(e.pageX-track.offsetLeft-startX)*1.8});
+
+// STAGGER ROWS
+document.querySelectorAll('.skills-table tr.rv').forEach((r,i)=>{r.style.transitionDelay=i*.06+'s'});
+</script>
+</body>
+</html>
